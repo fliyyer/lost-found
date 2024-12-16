@@ -1,7 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Homepage from "./pages/Homepage"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import UploadItems from "./pages/upload-items"
+import Homepage from "./pages/homepage"
+import History from "./pages/history"
+import Profile from "./pages/profile"
 
 
 const router = createBrowserRouter([
@@ -16,6 +19,18 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: '/upload',
+    element: <UploadItems />
+  },
+  {
+    path: '/history',
+    element: <History />
+  },
+  {
+    path: '/profile',
+    element: <Profile />
   }
 ])
 

@@ -6,6 +6,7 @@ import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import OptionDropdown from '../components/option-dropdown';
 import { BiSolidCategory } from "react-icons/bi";
 import DatePicker from '../components/date-picker';
+import NavigationBar from '../components/navigation-bar';
 
 const Homepage = () => {
     const categories = ["Barang Elektronik", "Pakaian", "Aksesori"];
@@ -13,7 +14,7 @@ const Homepage = () => {
 
     return (
         <Container>
-            <main className="relative flex flex-col h-full p-6 overflow-x-hidden rounded-lg w-full">
+            <main className="relative flex flex-col h-full p-6 rounded-lg w-full">
                 <img src={Bubble} alt="Bubble" className="absolute -z-10 top-0 right-0" />
                 <div className="flex flex-col space-y-4">
                     <img src={Logo} alt="Logo" className="w-[200px]" />
@@ -45,7 +46,7 @@ const Homepage = () => {
                                     <table className="min-w-full rounded-md text-left text-sm font-light">
                                         <thead
                                             className="border-b bg-gray-200 font-medium ">
-                                            <tr>
+                                            <tr className='text-xs'>
                                                 <th scope="col" className="py-4 px-2">Barang</th>
                                                 <th scope="col" className="py-4 px-2">Stasiun</th>
                                                 <th scope="col" className="py-4 px-2 text-nowrap">Waktu ditemukan</th>
@@ -53,13 +54,13 @@ const Homepage = () => {
                                         </thead>
                                         <tbody>
                                             <tr
-                                                className="border-b bg-neutral-50">
+                                                className="border-b text-xs bg-neutral-50">
                                                 <td className="whitespace-wrap px-2 py-4">Batrai & charger kamera nikon</td>
                                                 <td className="whitespace-wrap py-4 px-2">Manggarai</td>
                                                 <td className="whitespace-wrap py-4 px-2">30-11-2024-14:46</td>
                                             </tr>
                                             <tr
-                                                className="border-b bg-neutral-100">
+                                                className="border-b text-xs bg-neutral-100">
                                                 <td className="whitespace-wrap px-2 py-4">Batrai & charger kamera nikon</td>
                                                 <td className="whitespace-wrap px-2 py-4">Manggarai</td>
                                                 <td className="whitespace-wrap px-2 py-4">30-11-2024-14:46</td>
@@ -71,6 +72,7 @@ const Homepage = () => {
                         </div>
                     </div>
                 </div>
+                <NavigationBar />
             </main>
         </Container>
     );

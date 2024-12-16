@@ -25,7 +25,7 @@ const OptionDropdown = ({ label, icon, options }) => {
                 <FaChevronDown />
             </button>
             {isOpen && (
-                <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-md max-h-48 overflow-y-auto">
+                <ul className="absolute z-10 mt-2 w-full bg-white text-sm border border-gray-300 rounded-md shadow-md max-h-48 overflow-y-auto">
                     {options.map((option, index) => (
                         <li
                             key={index}

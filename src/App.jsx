@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
+import Login from "./pages/login"
+import Register from "./pages/register"
 import UploadItems from "./pages/upload-items"
 import Homepage from "./pages/homepage"
 import History from "./pages/history"

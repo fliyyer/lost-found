@@ -19,8 +19,9 @@ const NavigationBar = () => {
           <Link
             key={index}
             to={item.to}
-            className={`flex flex-col items-center text-gray-600 hover:text-[#004BFE] cursor-pointer ${location.pathname === item.to ? 'text-blue-500' : ''
+            className={`flex flex-col items-center text-gray-600 hover:text-[#004BFE] cursor-pointer ${location.pathname === item.to ? 'text-blue-600' : ''
               }`}
+
           >
             {item.icon}
             <span className="text-xs mt-1">{item.label}</span>

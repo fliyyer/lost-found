@@ -50,7 +50,7 @@ const UploadItems = () => {
 
   return (
     <Container>
-      <main className="p-6 relative pb-24">
+      <main className="p-4 h-full min-h-screen w-full mx-auto relative pb-24">
         <img src={Bubble} alt="Bubble" className="absolute -z-10 top-0 right-0" />
         <h1 className="text-2xl font-bold mb-6">Lost Item</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

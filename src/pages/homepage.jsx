@@ -9,12 +9,12 @@ import DatePicker from '../components/date-picker';
 import NavigationBar from '../components/navigation-bar';
 
 const Homepage = () => {
-    const categories = ["Barang Elektronik", "Pakaian", "Aksesori"];
-    const stations = ["Tanah Abang", "Duri", "Manggarai", "Sudirman"];
+    const categories = ["Aksesories", "Elektronik", "Pakaian", "Makanan", "Lainnya",];
+    const stations = ["Tugu", "Lempuyangan", "Klaten", "Solo Balapan", "Purwosari", "Solo Jebres"];
 
     return (
         <Container>
-            <main className="relative flex flex-col h-full p-6 rounded-lg w-full">
+            <main className="relative flex flex-col h-full p-6 overflow-x-hidden w-full">
                 <img src={Bubble} alt="Bubble" className="absolute -z-10 top-0 right-0" />
                 <div className="flex flex-col space-y-4">
                     <img src={Logo} alt="Logo" className="w-[200px]" />
@@ -28,13 +28,13 @@ const Homepage = () => {
                     </div>
                     <div className="flex flex-col space-y-2">
                         <OptionDropdown
-                            label="Category"
+                            label="Kategori"
                             icon={<BiSolidCategory className="text-gray-500" />}
                             options={categories}
                         />
                         <DatePicker label="Date" />
                         <OptionDropdown
-                            label="Station"
+                            label={stations[0]}
                             icon={<FaMapMarkerAlt className="text-gray-500" />}
                             options={stations}
                         />

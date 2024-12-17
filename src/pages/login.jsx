@@ -4,8 +4,10 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import InputField from '../components/input-filed';
 import LoginRight from '../assets/login-right.svg';
 import LoginLeft from '../assets/login-left.svg';
-import Logo from '../assets/logo.png'
-import { Link } from 'react-router-dom';
+import Logo from '../assets/logo.png';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../../service/api';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +15,8 @@ const Login = () => {
         email: '',
         password: ''
     });
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -23,13 +27,25 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+        setLoading(true);
+        try {
+            const result = await loginUser(formData);
+            toast.success(result.message || 'Login successful!');
+            localStorage.setItem('auth', result.token);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message || 'Failed to login.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <Container>
+            <ToastContainer />
             <main className="relative flex flex-col h-full justify-center p-6 rounded-lg w-full">
                 <img src={LoginRight} alt="Bubble" className="absolute top-0 right-0" />
                 <img src={LoginLeft} alt="Bubble" className="absolute top-0 left-0" />
@@ -63,8 +79,10 @@ const Login = () => {
                     <div>
                         <button
                             type="submit"
-                            className="w-full py-2 px-4 bg-[#004BFE] text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Login
+                            className="w-full py-2 px-4 bg-[#004BFE] text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            disabled={loading}
+                        >
+                            {loading ? 'Logging in...' : 'Login'}
                         </button>
                     </div>
                     <div className='text-center text-sm'>

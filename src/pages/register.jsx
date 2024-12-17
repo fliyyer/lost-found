@@ -6,6 +6,9 @@ import RegisterLeft from '../assets/login-left.svg';
 import Logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 import { Container } from '../components/container';
+import { registerUser } from '../../service/api';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -15,33 +18,51 @@ const Register = () => {
         email: '',
         phone: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        role: 'user'
     });
+
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
+    const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match!");
+            toast.error('Passwords do not match!');
             return;
         }
-        console.log(formData);
+        setLoading(true);
+        try {
+            const result = await registerUser(formData);
+            toast.success(result.message || 'Registration successful!');
+
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || 'Failed to register.');
+        } finally {
+            setLoading(false);
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                password: '',
+                confirmPassword: '',
+                role: 'user'
+            });
+        }
     };
 
     return (
         <Container>
+            <ToastContainer />
             <main className="relative flex flex-col h-full justify-center px-6 rounded-lg w-full">
                 <img src={RegisterRight} alt="Bubble" className="absolute top-0 right-0" />
                 <img src={RegisterLeft} alt="Bubble" className="absolute top-0 left-0" />
@@ -110,8 +131,9 @@ const Register = () => {
                         <button
                             type="submit"
                             className="w-full py-2 mt-2 px-4 bg-[#004BFE] text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            disabled={loading}
                         >
-                            Register
+                            {loading ? 'Registering...' : 'Register'}
                         </button>
                     </div>
                     <div className="text-center text-sm">

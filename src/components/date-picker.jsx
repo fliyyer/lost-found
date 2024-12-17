@@ -1,8 +1,9 @@
 import React from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
 
-const DatePicker = ({ label }) => {
-    const getCurrenDate = () => new Date().toISOString().split('T')[0];
+const DatePicker = ({ label, selectedDate, onDateChange }) => {
+    const getCurrentDate = () => new Date().toISOString().split('T')[0];
+
     return (
         <div className="relative">
             <label className="sr-only">{label}</label>
@@ -10,7 +11,8 @@ const DatePicker = ({ label }) => {
                 <FaCalendarAlt className="text-gray-500 mr-2" />
                 <input
                     type="date"
-                    defaultValue={getCurrenDate()}
+                    value={selectedDate || getCurrentDate()}
+                    onChange={(e) => onDateChange(e.target.value)}
                     className="w-full border-none focus:outline-none text-[#222222] font-semibold"
                 />
             </div>

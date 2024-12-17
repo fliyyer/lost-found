@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 
-const OptionDropdown = ({ label, icon, options }) => {
+const OptionDropdown = ({ label, icon, options, selectedOption, onSelectOption }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState("");
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const handleSelect = (option) => {
-        setSelected(option);
+        onSelectOption(option);
         setIsOpen(false);
     };
 
@@ -20,12 +20,12 @@ const OptionDropdown = ({ label, icon, options }) => {
             >
                 <div className="flex items-center space-x-2">
                     {icon}
-                    <span>{selected || label}</span>
+                    <span>{selectedOption || label}</span>
                 </div>
                 <FaChevronDown />
             </button>
             {isOpen && (
-                <ul className="absolute z-10 mt-2 w-full bg-white text-sm border border-gray-300 rounded-md shadow-md max-h-48 overflow-y-auto">
+                <ul className="absolute z-[9999] mt-2 w-full bg-white text-sm border border-gray-300 rounded-md shadow-md max-h-48 overflow-y-auto">
                     {options.map((option, index) => (
                         <li
                             key={index}

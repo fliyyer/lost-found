@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { jwtDecode } from 'jwt-decode';
 const baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000/api';
 
 const token = localStorage.getItem('auth');
@@ -34,13 +34,12 @@ export const getAllItems = async (filters = {}) => {
 
 export const getItemDetails = async (id) => {
   try {
-    const response = await axios.get(`${baseURL}/items/${id}`);
-    return response.data.items;  
+    const response = await axios.get(`${baseURL}/items/details/${id}`); 
+    return response.data.item;  
   } catch (error) {
     throw error.response ? error.response.data : new Error('Something went wrong');
   }
 };
-
 
 export const uploadItem = async (itemData) => {
   try {
@@ -53,4 +52,33 @@ export const uploadItem = async (itemData) => {
     throw error.response ? error.response.data : new Error('Something went wrong');
   }
 };
+
+export const claimItem = async (itemId) => {
+  try {
+    const decoded = jwtDecode(token); 
+    const userId = decoded.id; 
+    const headers = { Authorization: `Bearer ${token}` };
+    const response = await axios.put(`${baseURL}/items/${itemId}/claim`, { userId }, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("Error in claimItem:", error); 
+    throw error.response ? error.response.data : new Error('Something went wrong');
+  }
+};
+
+export const acceptItem = async (itemId) => {
+  try {
+    const token = localStorage.getItem('auth');
+    const headers = { Authorization: `Bearer ${token}` };
+    const response = await axios.put(`${baseURL}/items/${itemId}/accept`, {}, { headers });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Something went wrong');
+  }
+};
+
+
+
+
+
 

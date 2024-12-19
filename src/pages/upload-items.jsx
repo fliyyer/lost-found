@@ -17,7 +17,7 @@ const UploadItems = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const categories = ["Aksesories", "Elektronik", "Pakaian", "Makanan", "Lainnya",];
+  const categories = ["Aksesories", "Elektronik", "Pakaian", "Makanan", "Lainnya"];
   const stations = ["Tugu", "Lempuyangan", "Klaten", "Solo Balapan", "Purwosari", "Solo Jebres"];
 
   const handleChange = (e) => {
@@ -28,7 +28,7 @@ const UploadItems = () => {
     }));
   };
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -40,7 +40,6 @@ const UploadItems = () => {
       };
       reader.readAsDataURL(file);
     }
-    console.log(formData.photo);
   };
 
   const handleReset = () => {
@@ -80,7 +79,7 @@ const UploadItems = () => {
       <ToastContainer />
       <main className="p-4 h-full min-h-screen w-full mx-auto relative pb-24">
         <img src={Bubble} alt="Bubble" className="absolute -z-10 top-0 right-0" />
-        <h1 className="text-2xl font-bold mb-6">Lost Item</h1>
+        <h1 className="text-2xl text-center font-bold mb-6">Upload Items</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
             label="Name"
@@ -113,7 +112,7 @@ const UploadItems = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="category">
+            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="lastLocation">
               Last Location
             </label>
             <select

@@ -10,12 +10,15 @@ const History = () => {
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const data = await getAllItems();
-        setItems(data);
+        const sortedItems = data.sort((a, b) => b.id - a.id);
+        setItems(sortedItems);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -32,7 +35,7 @@ const History = () => {
   const handleClaim = async () => {
     if (!selectedItem) return;
     try {
-      const response = await claimItem(selectedItem.id);
+      await claimItem(selectedItem.id);
       setItems((prevItems) =>
         prevItems.map((item) =>
           item.id === selectedItem.id ? { ...item, status: 'Checking' } : item
@@ -46,17 +49,27 @@ const History = () => {
     }
   };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(items.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <Container>
       <ToastContainer />
       <main className="p-4 h-full min-h-screen mx-auto relative pb-24">
         <img src={Bubble} alt="Bubble" className="absolute -z-10 top-0 right-0" />
-        <h1 className="text-xl font-bold mb-4 text-center">History of Lost Items</h1>
+        <h1 className="text-xl text-white font-bold mb-4 text-center">History</h1>
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
-              <table className="min-w-full text-xs rounded-md text-left font-light">
-                <thead className="border-b bg-gray-200 font-medium">
+              <table className="min-w-full rounded-lg text-left text-sm font-light shadow-md overflow-hidden">
+                <thead className="bg-blue-600 text-white">
                   <tr>
                     <th scope="col" className="py-2 px-2">Barang</th>
                     <th scope="col" className="py-2 px-2">Stasiun</th>
@@ -65,11 +78,11 @@ const History = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item, index) => (
-                    <tr key={index} className={`border-b ${index % 2 === 0 ? 'bg-neutral-50' : 'bg-neutral-100'}`} onClick={() => handleItemClick(item)}>
-                      <td className="px-2 py-2">{item.name}</td>
-                      <td className="px-2 py-2">{item.lastLocation}</td>
-                      <td className="px-2 py-2">
+                  {currentItems.map((item, index) => (
+                    <tr key={index} className={`border-b text-xs ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-100 transition duration-200 ease-in-out cursor-pointer`} onClick={() => handleItemClick(item)}>
+                      <td className="px-2 py-3">{item.name}</td>
+                      <td className="px-2 py-3">{item.lastLocation}</td>
+                      <td className="px-2 py-3">
                         <span
                           className={`px-2 py-1 rounded-full ${item.status === 'Checking'
                             ? 'bg-red-300 text-gray-800'
@@ -95,11 +108,9 @@ const History = () => {
                           <button
                             disabled
                             className="px-1 py-2 bg-gray-500 text-white rounded-md"
-
                           >
                             Accepted
                           </button>
-
                         )}
                       </td>
                     </tr>
@@ -108,6 +119,19 @@ const History = () => {
               </table>
             </div>
           </div>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-4">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`mx-1 px-3 py-1 rounded-md ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-800'} hover:bg-blue-500`}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       </main>
       <NavigationBar />

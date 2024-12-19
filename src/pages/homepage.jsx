@@ -94,25 +94,27 @@ const Homepage = () => {
                         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                                 <div className="overflow-hidden">
-                                    <table className="min-w-full rounded-md text-left text-sm font-light">
-                                        <thead className="border-b bg-gray-200 font-medium">
+                                    <table className="min-w-full rounded-lg text-left text-sm font-light shadow-md overflow-hidden">
+                                        <thead className="bg-blue-600 text-white">
                                             <tr className='text-xs'>
                                                 <th scope="col" className="py-4 px-2">Barang</th>
                                                 <th scope="col" className="py-4 px-2">Stasiun</th>
-                                                <th scope="col" className="py-4 px-2 text-nowrap">Waktu ditemukan</th>
+                                                <th scope="col" className="py-4 px-4 ">Waktu Ditemukan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {items.map((item, index) => (
-                                                <tr
-                                                    key={index}
-                                                    className={`border-b text-xs ${index % 2 === 0 ? 'bg-neutral-50' : 'bg-neutral-100'} hover:bg-gray-200 cursor-pointer`}
-                                                    onClick={() => handleItemClick(item.id)}>
-                                                    <td className="whitespace-wrap px-2 py-4">{item.name}</td>
-                                                    <td className="whitespace-wrap py-4 px-2">{item.lastLocation}</td>
-                                                    <td className="whitespace-wrap py-4 px-2">{item.date}</td>
-                                                </tr>
-                                            ))}
+                                            {items
+                                                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                                                .map((item, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className={`border-b text-xs ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-100 transition duration-200 ease-in-out cursor-pointer`}
+                                                        onClick={() => handleItemClick(item.id)}>
+                                                        <td className="whitespace-nowrap px-4 py-3">{item.name}</td>
+                                                        <td className="whitespace-nowrap py-3 px-4">{item.lastLocation}</td>
+                                                        <td className="whitespace-nowrap py-3 px-4">{item.date}</td>
+                                                    </tr>
+                                                ))}
                                         </tbody>
                                     </table>
                                 </div>
@@ -123,7 +125,7 @@ const Homepage = () => {
                 {isPopupOpen && <PopupItem item={selectedItem} onClose={() => setIsPopupOpen(false)} />}
                 <NavigationBar />
             </main>
-        </Container>
+        </Container >
     );
 };
 

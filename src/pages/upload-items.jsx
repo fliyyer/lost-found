@@ -31,6 +31,20 @@ const UploadItems = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validasi file gambar
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validImageTypes.includes(file.type)) {
+        toast.error('Please upload a valid image (JPEG, PNG, GIF).');
+        return;
+      }
+
+      // Validasi ukuran file (misalnya, maksimum 5MB)
+      const maxSizeInMB = 5;
+      if (file.size > maxSizeInMB * 1024 * 1024) {
+        toast.error(`File size exceeds ${maxSizeInMB}MB. Please upload a smaller image.`);
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prevData) => ({

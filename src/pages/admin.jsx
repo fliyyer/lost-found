@@ -33,7 +33,7 @@ const Admin = () => {
     try {
       const response = await acceptItem(itemId);
       setItems((prevItems) => prevItems.filter(item => item.id !== itemId));
-      toast.success("Item Admined successfully!");
+      toast.success("Item Claimed successfully!");
     } catch (error) {
       console.error("Error Admining item:", error);
       toast.error("Failed to Admin item.");
@@ -100,33 +100,36 @@ const Admin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item, index) => (
-                    <tr
-                      key={index}
-                      className={`border-b text-xs ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-100 transition duration-200 ease-in-out cursor-pointer`}
-                      onClick={() => handleItemClick(item)}
-                    >
-                      <td className="px-4 py-3 font-medium text-gray-800">{item.name}</td>
-                      <td className="px-4 py-3 text-gray-600">{item.lastLocation}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded-full ${item.status === 'Checking' ? 'bg-yellow-300' : 'bg-red-300'} text-gray-800`}>
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <button
-                          className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-200"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openConfirmModal(item);
-                          }}
-                        >
-                          Acc
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {items
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Urutkan dari terbaru ke terlama
+                    .map((item, index) => (
+                      <tr
+                        key={index}
+                        className={`border-b text-xs ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-100 transition duration-200 ease-in-out cursor-pointer`}
+                        onClick={() => handleItemClick(item)}
+                      >
+                        <td className="px-4 py-3 font-medium text-gray-800">{item.name}</td>
+                        <td className="px-4 py-3 text-gray-600">{item.lastLocation}</td>
+                        <td className="px-2 py-3">
+                          <span className={`px-2 py-1 rounded-full ${item.status === 'Checking' ? 'bg-yellow-300' : 'bg-red-300'} text-gray-800`}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td className="px-2 py-3 text-center">
+                          <button
+                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-200"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openConfirmModal(item);
+                            }}
+                          >
+                            Acc
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
+
               </table>
             </div>
           </div>

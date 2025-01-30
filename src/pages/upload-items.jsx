@@ -17,8 +17,8 @@ const UploadItems = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const categories = ["Aksesories", "Elektronik", "Pakaian", "Makanan", "Lainnya"];
-  const stations = ["Tugu", "Lempuyangan", "Klaten", "Solo Balapan", "Purwosari", "Solo Jebres"];
+  const categories = ["Makanan dan Minuman", "Barang Berharga", "Barang Biasa"];
+  const stations = ["Yogyakarta", "Yogyakarta International Airport", "Wates"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,28 +31,22 @@ const UploadItems = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validasi file gambar
       const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
       if (!validImageTypes.includes(file.type)) {
         toast.error('Please upload a valid image (JPEG, PNG, GIF).');
         return;
       }
 
-      // Validasi ukuran file (misalnya, maksimum 5MB)
-      const maxSizeInMB = 5;
+      const maxSizeInMB = 4;
       if (file.size > maxSizeInMB * 1024 * 1024) {
         toast.error(`File size exceeds ${maxSizeInMB}MB. Please upload a smaller image.`);
         return;
       }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prevData) => ({
-          ...prevData,
-          photo: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        photo: file,
+      }));
     }
   };
 
@@ -75,9 +69,19 @@ const UploadItems = () => {
       return;
     }
 
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('category', formData.category);
+    formDataToSend.append('lastLocation', formData.lastLocation);
+    formDataToSend.append('date', formData.date);
+    formDataToSend.append('description', formData.description);
+    if (formData.photo) {
+      formDataToSend.append('photo', formData.photo);
+    }
+
     setLoading(true);
     try {
-      const result = await uploadItem(formData);
+      const result = await uploadItem(formDataToSend);
       toast.success(result.message || 'Item uploaded successfully!');
       handleReset();
     } catch (error) {

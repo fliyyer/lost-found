@@ -11,8 +11,8 @@ import { getAllItems, getItemDetails } from '../../service/api';
 import PopupItem from '../components/popup-item';
 
 const Homepage = () => {
-    const categories = ["Aksesories", "Elektronik", "Pakaian", "Makanan", "Lainnya"];
-    const stations = ["Tugu", "Lempuyangan", "Klaten", "Solo Balapan", "Purwosari", "Solo Jebres"];
+    const categories = ["Makanan dan Minuman", "Barang Berharga", "Barang Biasa"];
+    const stations = ["Yogyakarta", "Yogyakarta International Airport", "Wates"];
     const [selectedItem, setSelectedItem] = useState(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
